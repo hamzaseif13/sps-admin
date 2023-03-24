@@ -34,9 +34,9 @@ interface Props {
   return (
     <div >
       <input type="text" className="input-feild p-4" placeholder="Search for Zone" onChange={filterZones}/>
-      <div className="flex gap-2 flex-wrap my-2 min-h-[300px]">
+      <div className="flex gap-2 flex-wrap my-2 ">
         {fetchedZones.map((zone) => (
-          <div className={`chip rounded-lg h-[4rem] ${isSelected(zone)? "bg-blue-500 text-white":""}`} onClick={()=>toggle(zone)} key={zone}>
+          <div className={`chip rounded-lg hover:cursor-pointer hover:bg-blue-400 ${isSelected(zone)? "bg-blue-500 text-white":""}`} onClick={()=>toggle(zone)} key={zone}>
             <h1 className="font-extrabold">{zone}</h1>
             <p>Al-Yarmouk St. 6, Amman, Jordan</p>
           </div>
