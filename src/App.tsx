@@ -1,17 +1,12 @@
 import { useState } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import Sidebar from './components/Layout'
 import Layout from './components/Layout'
-import Fabric from './features/addZone/SpacesInfo'
-import AddZone from './pages/zones/AddZone'
-import Home from './pages/Home'
-import AddOfficer from './pages/officers/AddOfficer'
+import AddZone from './pages/addZones'
+import Home from './pages'
+import AddOfficer from './pages/addOfficer'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-
     <BrowserRouter>
       <Layout>
       <Routes>

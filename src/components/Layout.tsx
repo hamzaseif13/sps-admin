@@ -1,4 +1,6 @@
-import { MapPinIcon, UserIcon } from '@heroicons/react/20/solid'
+
+import FmdGoodIcon from '@mui/icons-material/FmdGood';
+import PersonIcon from '@mui/icons-material/Person';
 import React, { ReactNode } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import Dropdown from './Dropdown'
@@ -17,7 +19,7 @@ function Sidebar({children}:{children:ReactNode}) {
               </NavLink>
             </li>
            
-            <Dropdown title='Zones' icon={<MapPinIcon />}>
+            <Dropdown title='Zones' icon={<FmdGoodIcon />}>
                <li>
                 <NavLink to='/zones' end  className={({isActive})=> `flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 group text-white hover:bg-gray-700 ${isActive && 'bg-gray-700'}`}>
                   All zones
@@ -29,7 +31,7 @@ function Sidebar({children}:{children:ReactNode}) {
                 </NavLink>
               </li>
             </Dropdown>
-            <Dropdown title='Officers' icon={<UserIcon />}>
+            <Dropdown title='Officers' icon={<PersonIcon />}>
                <li>
                 <NavLink to='/officers'end className={({isActive})=> `flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 group text-white hover:bg-gray-700 ${isActive && 'bg-gray-700'}`}>
                   All Officers

@@ -1,4 +1,3 @@
-import { MapPinIcon } from '@heroicons/react/20/solid'
 import React, { ReactNode, useState } from 'react'
 
 function Dropdown({children,title,icon}:{children:ReactNode,title:string,icon:JSX.Element}) {

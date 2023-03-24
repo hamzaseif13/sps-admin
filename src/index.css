@@ -29,7 +29,11 @@ body{
     @apply text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center ;
   }
   .title{
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Open Sans', sans-serif ;
+    @apply text-4xl
+  }
+  .chip{
+    @apply bg-gray-50 border border-gray-300 text-gray-900  p-2 
   }
 }
 
