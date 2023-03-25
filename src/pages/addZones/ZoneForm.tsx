@@ -73,7 +73,25 @@ function ZoneForm() {
             </span>
           )}
         </div>
-
+        <div className="my-2">
+          <label htmlFor="spacesCount" className="input-label ">
+            Fee{" "}
+          </label>
+          <div className=" flex items-center rounded">
+            <input
+              defaultValue={1}
+              type="number"
+              id="spacesCount"
+              className="input-feild "
+              {...register("fee", { required: true, min: 0.5, max: 3 })}
+            />
+          </div>
+          {errors.fee && (
+            <span className="error-span ">
+              Fee cant be negative  
+            </span>
+          )}
+        </div>
         <div className="my-2">
           <label htmlFor="address" className="input-label">
             Zone Address

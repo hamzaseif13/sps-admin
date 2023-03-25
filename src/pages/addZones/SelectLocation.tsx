@@ -73,7 +73,7 @@ const SelectLocation: React.FC<Props> = ({ zoneLocation, setZoneLocation }) => {
     <div className="">
       <span className="block h-8">{zoneLocation?.address}</span>
       <div className="relative">
-        <div className="flex absolute z-10 top-0 rounded  right-0 text-white bg-zinc-500">
+        <div className="flex absolute z-10 top-0 rounded items-center right-0 text-white bg-zinc-500">
           <input
             type="text"
             ref={inputRef}
@@ -82,7 +82,7 @@ const SelectLocation: React.FC<Props> = ({ zoneLocation, setZoneLocation }) => {
           <SearchIcon className="w-10" />
         </div>
         <div
-          className="w-full border h-[750px] rounded shadow-lg"
+          className="w-full border h-[500px] rounded shadow-lg"
           ref={mapRef}
         />
       </div>

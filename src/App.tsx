@@ -4,6 +4,9 @@ import Layout from './components/Layout'
 import AddZone from './pages/addZones'
 import Home from './pages'
 import AddOfficer from './pages/addOfficer'
+import AllOfficers from './pages/allOfficers'
+import SingleOfficer from './pages/singleOfficer'
+import AllZones from './pages/allZones'
 
 function App() {
   return (
@@ -12,12 +15,13 @@ function App() {
       <Routes>
         <Route path='' element={<Home/>} />
         <Route path='zones'>
-          <Route index element={<h1  className=''>all zones</h1>} />
+          <Route index element={<AllZones/>} />
           <Route path='add' element={<AddZone/>} />
         </Route>
         <Route path='officers'>
-          <Route index element={<h1 className=''>all officers</h1>} />
+          <Route index element={<AllOfficers/>} />
           <Route path='add' element={<AddOfficer/>} />
+          <Route path=':id' element={<SingleOfficer/>} />
         </Route>
       </Routes>
       </Layout>
