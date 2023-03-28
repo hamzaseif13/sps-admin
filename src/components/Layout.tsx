@@ -3,10 +3,21 @@ import FmdGoodIcon from '@mui/icons-material/FmdGood';
 import PersonIcon from '@mui/icons-material/Person';
 import React, { ReactNode } from 'react'
 import { Link, NavLink } from 'react-router-dom'
+import useAuth from '../hooks/useAuth';
 import Dropdown from './Dropdown'
-
+import LogoutIcon from '@mui/icons-material/Logout';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../store/store';
+import { onLogout } from '../features/login/loginSlice';
 
 function Sidebar({children}:{children:ReactNode}) {
+  const dispatch = useDispatch<AppDispatch>()
+
+  const [isAuth] = useAuth()
+  if(!isAuth) return children
+  const logOut=()=>{
+    dispatch(onLogout({}))
+  }
   return (
     <>
       <aside  className="fixed  top-0 left-0 z-40 w-64 h-screen transition-transform  translate-x-0" >
@@ -43,6 +54,15 @@ function Sidebar({children}:{children:ReactNode}) {
                 </NavLink>
               </li>
             </Dropdown>
+            <li>
+              <button onClick={logOut} className='w-full flex  p-2 text-base font-normal  rounded-lg  text-white  hover:bg-gray-700
+              '>
+                <div className='text-gray-400'>
+                <LogoutIcon color='inherit'/>
+                </div>
+                <span className="flex-1 ml-3 whitespace-nowrap text-left">Logout</span>
+              </button>
+            </li>
           </ul>
         </div>
       </aside>

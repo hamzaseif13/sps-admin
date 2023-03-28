@@ -10,12 +10,13 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import { CustomModal } from "../../components/CustomModal";
 import SelectLocation from "./SelectLocation";
+import useToggle from "../../hooks/useToggle";
 
 
 
 
 function ZoneForm() {
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, toggleShowModal] = useToggle(false);
   const [zoneLocation,setZoneLocation] = useState<ZoneLocation>()
   const {
     register,
@@ -32,8 +33,7 @@ function ZoneForm() {
    
   };
   const closeModal = () => {
-    setShowModal(false);
-   
+   toggleShowModal()
   };
   return (
     <div className="rounded-lg  shadow-2xl p-4 max-w-[800px] m-auto">
@@ -97,7 +97,7 @@ function ZoneForm() {
             Zone Address
           </label>
           <button
-            onClick={() => setShowModal(true)}
+            onClick={toggleShowModal}
             type="button"
             className="borde-gray-500 border flex gap-2 items-center p-2 rounded-lg hover:bg-white bg-gray-50">
             {zoneLocation?.address ? zoneLocation?.address : "Select Location"}

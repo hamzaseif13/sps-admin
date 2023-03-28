@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import addZoneReducer from "../features/addZone/addZoneSlice";
+import login from "../features/login/loginSlice";
 export const store = configureStore({
     reducer:{
-        addZoneReducer
+         login,
     }
 })
 

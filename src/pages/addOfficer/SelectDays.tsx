@@ -6,13 +6,13 @@ interface Props {
 }
 const SelectDays: React.FC<Props> = ({ setDays, days }) => {
   const allDays = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
+   "SUNDAY",
+    "MONDAY",
+    "TUESDAY",
+    "WEDNESDAY",
+    "THURSDAY",
+    "FRIDAY",
+    "SATURDAY",
   ];
   const isSelected = (day: string) => {
     return days.includes(day);
