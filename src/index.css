@@ -17,7 +17,7 @@ body{
       @apply  hover:opacity-80 focus:ring-4 focus:outline-none  font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center;
   }
   .input-feild{
-    @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 
+    @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 
   }
   .input-label{
     @apply block mb-2 text-sm font-medium text-gray-900 ;

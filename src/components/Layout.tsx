@@ -9,7 +9,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../store/store';
 import { onLogout } from '../features/login/loginSlice';
-
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 function Sidebar({children}:{children:ReactNode}) {
   const dispatch = useDispatch<AppDispatch>()
 
@@ -29,7 +29,18 @@ function Sidebar({children}:{children:ReactNode}) {
                 <span className="flex-1 ml-3 whitespace-nowrap">Dashboard</span>
               </NavLink>
             </li>
-           
+            <Dropdown title='Admins' icon={<AdminPanelSettingsIcon />}>
+               <li>
+                <NavLink to='/admins' end  className={({isActive})=> `flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 group text-white hover:bg-gray-700 ${isActive && 'bg-gray-700'}`}>
+                  All Admins
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to='/admins/add' end className={({isActive})=> `flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 group text-white hover:bg-gray-700 ${isActive && 'bg-gray-700'}`}>
+                  Add Admin
+                </NavLink>
+              </li>
+            </Dropdown>
             <Dropdown title='Zones' icon={<FmdGoodIcon />}>
                <li>
                 <NavLink to='/zones' end  className={({isActive})=> `flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 group text-white hover:bg-gray-700 ${isActive && 'bg-gray-700'}`}>

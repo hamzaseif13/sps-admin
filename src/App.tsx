@@ -10,6 +10,7 @@ import AllZones from "./pages/allZones";
 import LoginPage from "./pages/login";
 import useAuth from "./hooks/useAuth";
 import SecureRoute from "./components/SecureRoute";
+import AddAdmin from "./pages/addAdmin";
 
 function App() {
   const [isAuth] = useAuth();
@@ -24,12 +25,17 @@ function App() {
               <Route index element={<AllZones />} />
               <Route path="add" element={<AddZone />} />
             </Route>
+            <Route path="admins">
+              <Route index element={<h1 >All admins</h1>} />
+              <Route path="add" element={<AddAdmin />} />
+            </Route>
             <Route path="officers">
               <Route index element={<AllOfficers />} />
               <Route path="add" element={<AddOfficer />} />
               <Route path=":id" element={<SingleOfficer />} />
             </Route>
           </Route>
+
           <Route path="login" element={<LoginPage />} />
           <Route path="*" element={<h1>Wrong path</h1>} />
         </Routes>
