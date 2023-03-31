@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import QRCode from 'qrcode'
-const QRGenerator = () => {
+interface Props{
+  zoneId:number
+}
+const QRGenerator:React.FC<Props> = ({zoneId}) => {
     const [qrData, setQRData] = useState<string>();
 
     useEffect(()=>{
-        QRCode.toDataURL('www.facebook.com', (err, url) => {
+        QRCode.toDataURL(String(zoneId), (err, url) => {
             if (err) throw err;
             setQRData(url);
           });
@@ -18,11 +21,11 @@ const QRGenerator = () => {
         document.body.removeChild(link);
       }
   return (
-    <div>
+    <div className='flex justify-center flex-col'>
         {
-        qrData &&  <img src={qrData} alt="QR Code" />
+        qrData &&  <img src={qrData} alt="QR Code"  className='m-auto w-[500px]'/>
         }
-        <button onClick={downloadQRCode}>Download QR Code</button>
+        <button onClick={downloadQRCode} className='submit-btn '>Download QR Code</button>
     </div>
   )
 }

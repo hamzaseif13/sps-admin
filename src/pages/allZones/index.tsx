@@ -4,40 +4,33 @@ import QrCode2Icon from "@mui/icons-material/QrCode2";
 import useToggle from "../../hooks/useToggle";
 import { CustomModal } from "../../components/CustomModal";
 import QRGenerator from "./QRGenerator";
+import useAsync from "../../hooks/useAsync";
+import { getAllZones } from "../../features/zone/api";
+import CircularProgress from '@mui/material/CircularProgress';
+import LinearProgress from '@mui/material/LinearProgress';
+import ZoneCard from "./ZoneCard";
+import { Alert } from "@mui/material";
 const AllZones = () => {
+  const {status,value,error} = useAsync(getAllZones,true)
   const [qrModal, toggleQR] = useToggle(false);
+  if(value){1
+    console.log(value)
+  }
   return (
     <main className="px-2  mt-[2rem]">
-      <h1 className=" font-bold title text-center mb-4">Zones</h1>
-      <section className="flex gap-2 justify-center">
-        <div className="p-4 rounded-lg shadow">
-          <div className="flex gap-2 items-center">
-            <h1 className="text-2xl font-medium">City Mall South Gate</h1>
-            <span className="block font-bold border p-2 rounded-lg">
-              TC-102
-            </span>
-          </div>
-          <p className="text-gray-500 my-2">
-            الدوار الرابع، Zahran St, Amman, Jordan
-          </p>
-          <h2 className="my-2">Total Spaces : 15</h2>
-          <h2 className="my-2">Available Spaces : 5</h2>
-          <div className="flex gap-2">
-            <button
-              onClick={toggleQR}
-              className="submit-btn block my-2 bg-gray-800">
-              <QrCode2Icon />
-            </button>
-            <button className="submit-btn block my-2">Edit</button>
-          </div>
-          <CustomModal
-            open={qrModal}
-            onClose={toggleQR}
-            title="Qr Code For Zone">
-            <QRGenerator />
-          </CustomModal>
-        </div>
+      <h1 className=" font-bold title text-center mb-4 ">Zones</h1>
+      <section className="flex gap-2 justify-center flex-wrap">
+        { status==="success" && value?.data?.map((zone:any) => (
+          <ZoneCard zoneInfo={zone}/>
+      ))
+      }
       </section>
+      {
+        status==='pending' && <LinearProgress />
+      }
+      {
+        status==='error' &&  <Alert severity="error">Something Went Wrong Please Try Again Later.</Alert>
+      }
     </main>
   );
 };
