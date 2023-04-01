@@ -11,6 +11,7 @@ import LoginPage from "./pages/login";
 import useAuth from "./hooks/useAuth";
 import SecureRoute from "./components/SecureRoute";
 import AddAdmin from "./pages/addAdmin";
+import AllAdmins from "./pages/allAdmins";
 
 function App() {
   const [isAuth] = useAuth();
@@ -26,7 +27,7 @@ function App() {
               <Route path="add" element={<AddZone />} />
             </Route>
             <Route path="admins">
-              <Route index element={<h1 >All admins</h1>} />
+              <Route index element={<AllAdmins/>} />
               <Route path="add" element={<AddAdmin />} />
             </Route>
             <Route path="officers">

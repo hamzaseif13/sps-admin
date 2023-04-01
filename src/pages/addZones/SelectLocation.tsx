@@ -1,12 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "../../store/store";
-import {
-  selectZoneLocation,
-  setZoneLocation,
-  ZoneLocation,
-} from "../../features/addZone/addZoneSlice";
+
+
 import SearchIcon from "@mui/icons-material/Search";
+import { ZoneLocation } from "../../features/zone/api";
 
 interface Props {
   zoneLocation?: ZoneLocation;

@@ -57,7 +57,6 @@ const LoginPage = () => {
           </label>
           <div className=" flex items-center rounded">
             <input
-              defaultValue={5}
               type="password"
               id="password"
               className="input-feild "

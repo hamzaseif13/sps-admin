@@ -12,6 +12,7 @@ import SelectDays from "./SelectDays";
 import SelectZones from "./SelectZones";
 import { ZoneChip } from "./ZoneChip";
 import Alert from "@mui/material/Alert";
+import { ZoneInfo } from "../../features/zone/api";
 export interface Schedule {
   startsAt: string;
   endsAt: string;
@@ -22,7 +23,7 @@ function AddOfficer() {
   const [zonesModal, toggleZonesModal] = useToggle(false);
   const [daysModal, toggleDaysModal] = useToggle(false);
 
-  const [zones, setZones] = useState<string[]>([]);
+  const [zones, setZones] = useState<ZoneInfo[]>([]);
   const [daysOfWeek, setDays] = useState<string[]>([]);
 
   const [error, setError] = useState<string>();
@@ -165,6 +166,7 @@ function AddOfficer() {
               type="time"
               className="input-feild"
               {...register("startsAt", { required: true })}
+              defaultValue={"08:00"}
             />
           </div>
           <div className="w-1/2">
@@ -173,10 +175,11 @@ function AddOfficer() {
               type="time"
               className="input-feild"
               {...register("endsAt", { required: true })}
+              defaultValue={"18:00"}
             />
           </div>
         </div>
-        <div className="mb-3">
+     {/*    <div className="mb-3">
           <label className="input-label">Days of Week</label>
           <div className="flex gap-2 my-2 flex-wrap">
             <button
@@ -198,7 +201,7 @@ function AddOfficer() {
           {errors.daysOfWeek && (
             <span className="error-span ">This Field Is Required</span>
           )}
-        </div>
+        </div> */}
         <h1 className="text-2xl font-medium mb-2">Zones</h1>
         <div className="mb-3">
           <label className="input-label">Assigned Zones</label>
@@ -210,7 +213,7 @@ function AddOfficer() {
               <Add />
             </button>
             {zones.map((zone) => (
-              <ZoneChip key={zone} zone={zone} setZones={setZones} />
+              <ZoneChip key={zone.zoneId} zoneTag={zone.tag} setZones={setZones} />
             ))}
           </div>
           <CustomModal
