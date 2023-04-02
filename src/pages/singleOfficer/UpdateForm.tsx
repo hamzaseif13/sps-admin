@@ -51,10 +51,10 @@ const UpdateForm: React.FC<Props> = ({ days, officerId }) => {
       });
     }
   };
-  if(status === "success"){
+  if (status === "success") {
     setTimeout(() => {
-       window.location.reload()
-    },1500)
+      window.location.reload();
+    }, 1500);
   }
   return (
     <form

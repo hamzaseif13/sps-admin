@@ -1,19 +1,18 @@
 import React from 'react'
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import { ZoneInfo } from '../../features/zone/api';
 interface Props{
-    setZones:React.Dispatch<React.SetStateAction<ZoneInfo[]>>
-    zoneTag:string
+    setDays:React.Dispatch<React.SetStateAction<string[]>>
+    day:string
 }
-export const ZoneChip:React.FC<Props> = ({setZones,zoneTag}) => {
+export const DayChip:React.FC<Props> = ({setDays,day}) => {
     const deleteZone=()=>{
-        setZones((prevZones)=>{
-            return prevZones.filter((z)=>z.tag!==zoneTag)
+        setDays((prevZones:string[])=>{
+            return prevZones.filter((z)=>z!==day)
         })
     }
   return (
     <div className='chip rounded-lg flex items-center gap-2'>
-        <h2 className='font-bold text-lg'>{zoneTag}</h2>
+        <h2 className='font-bold text-lg'>{day}</h2>
         <button onClick={deleteZone} type="button"className='text-gray-500 hover:text-gray-800'>
             <HighlightOffIcon/>
         </button>

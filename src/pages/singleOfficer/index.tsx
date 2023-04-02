@@ -7,6 +7,7 @@ import Alert from "@mui/material/Alert";
 import useToggle from "../../hooks/useToggle";
 import { CustomModal } from "../../components/CustomModal";
 import UpdateForm from "./UpdateForm";
+
 const SingleOfficer = () => {
   const { id } = useParams();
   const { value, status, error } = useAsync(getOfficerById, true, id);
@@ -85,13 +86,9 @@ const SingleOfficer = () => {
               <div className="mb-3">
                 <label className="input-label">Zones</label>
                 <div className="flex gap-2 my-2 ">
-                  <a href="/" className="border p-1 rounded-lg">
-                    TC-101
-                  </a>
-                  <span className="border p-1 rounded-lg">TC-101</span>
-                  <span className="border p-1 rounded-lg">TC-101</span>
-                  <span className="border p-1 rounded-lg">TC-101</span>
-                  <span className="border p-1 rounded-lg">TC-101</span>
+                 {value?.data.zones.map((zone:any)=>(
+                    <span className="border p-1 rounded-lg">{zone.tag}</span>
+                  ))}
                 </div>
               </div>
               <div className="flex justify-end">

@@ -46,7 +46,7 @@ const OfficerCard: React.FC<Props> = ({ officer, refresh }) => {
       </td>
       <td className="px-6 py-4">{officer.schedule?.endsAt.substring(0, 5)}</td>
       <td className="px-6 py-4">
-        <Link to={`/officers/${officer.id}`} className="submit-btn">
+        <Link to={`/officers/add`} className="submit-btn" state={{edit:true,officer}}>
           details
         </Link>
       </td>

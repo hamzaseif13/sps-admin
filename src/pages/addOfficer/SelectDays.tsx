@@ -44,7 +44,7 @@ const SelectDays: React.FC<Props> = ({ setDays, days }) => {
         ))}
         <div
             className={`chip rounded-lg hover:cursor-pointer hover:bg-blue-400 text-white" `}
-            onClick={() => setDays(allDays)}
+            onClick={() =>{setDays(days.length===7? []:allDays) }}
             >
             <h1 className="font-extrabold">Select All</h1>
           </div>

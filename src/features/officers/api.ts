@@ -24,6 +24,7 @@ export interface Officer {
   email: string;
   zones?: any;
   schedule?: Schedule;
+  phone: number;
 }
 export interface Schedule {
   daysOfWeek: string[];
@@ -31,20 +32,29 @@ export interface Schedule {
   endsAt: string;
 }
 
-export type OfficerUpdateRequest = Pick<OfficerRegisterRequest,"startsAt"|"endsAt"|"daysOfWeek"|"zoneIds"> & {id:number}
+export type OfficerUpdateRequest = Pick<
+  OfficerRegisterRequest,
+  "startsAt" | "endsAt" | "daysOfWeek" | "zoneIds"
+> & { id: number };
 
 export const getAllOfficers = () => {
   return axiosInstance.get("");
 };
-export const createOfficer = (officerRegisterRequest: OfficerRegisterRequest) => {
-  return axiosInstance.post("", officerRegisterRequest);
+export const createOrUpdateOfficer = (
+  req: OfficerRegisterRequest | OfficerUpdateRequest
+) => {
+  if ("id" in req) {
+    return axiosInstance.put(`${req.id}`, req);
+  } else {
+    return axiosInstance.post("", req);
+  }
 };
 export const deleteOfficerById = (id: number) => {
   return axiosInstance.delete(`/${id}`);
 };
 export const getOfficerById = (id: number) => {
-    return axiosInstance.get(`/${id}`);
-}
-export const updateOfficer = (req:OfficerUpdateRequest)=>{
-    return axiosInstance.put(`/${req.id}`,req)
-}
+  return axiosInstance.get(`/${id}`);
+};
+export const updateOfficer = (req: OfficerUpdateRequest) => {
+  return axiosInstance.put(`/${req.id}`, req);
+};
