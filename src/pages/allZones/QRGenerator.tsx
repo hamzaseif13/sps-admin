@@ -3,6 +3,10 @@ import QRCode from 'qrcode'
 interface Props{
   zoneId:number
 }
+// TODO 
+/* qr capital 
+qr imagewith name and number */
+
 const QRGenerator:React.FC<Props> = ({zoneId}) => {
     const [qrData, setQRData] = useState<string>();
 

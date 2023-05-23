@@ -14,7 +14,8 @@ const AddAdmin = () => {
     } = useForm();
 
     const submit = (data: any) => {
-        execute(data)
+        console.log({email:data.email,firstName:data.firstName,lastName:data.lastName,password:data.password})
+        execute({email:data.email,firstName:data.firstName,lastName:data.lastName,password:data.password})
     }
     const generatePassword = () => {
         setValue("password", getValues("phone") + "-" + getValues("firstName"));

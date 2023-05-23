@@ -7,13 +7,12 @@ export interface CreateAdminRequest{
     password:string
     phone:number
 }
-
 const axiosInstance = axios.create({
     baseURL: import.meta.env.VITE_API_URL + "/api/v1/admin",
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
-  });
+});
 export type Admin = Omit<Officer,"zones"|"schedule">
 
 export const createAdmin=(req:CreateAdminRequest)=>{

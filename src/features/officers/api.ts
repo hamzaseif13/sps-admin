@@ -24,7 +24,7 @@ export interface Officer {
   email: string;
   zones?: any;
   schedule?: Schedule;
-  phone: number;
+  phoneNumber: number;
 }
 export interface Schedule {
   daysOfWeek: string[];

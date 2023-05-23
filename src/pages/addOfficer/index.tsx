@@ -51,7 +51,7 @@ export const AddOfficer: React.FC<Props> = () => {
   } = useForm();
 
   const generatePassword = () => {
-    setValue("password", getValues("phone") + "-" + getValues("firstName"));
+    setValue("password", getValues("phoneNumber") + "-" + getValues("firstName"));
   };
   const submit = (data: any) => {
     if (!isBefore(data.startsAt, data.endsAt)) {
@@ -59,11 +59,12 @@ export const AddOfficer: React.FC<Props> = () => {
     } else if (daysOfWeek.length === 0 ) {
       setError("Please Select  Days");
     } else {
+      console.log(zones)
       const schedule = {
         daysOfWeek: daysOfWeek.map((d) => d.toUpperCase()),
         startsAt: data.startsAt ,
         endsAt: data.endsAt ,
-        zoneIds: zones.map((z) => z.zoneId),
+        zoneIds: zones.map((z:any) => z.id),
       };
     
       if(editMode){
@@ -85,7 +86,7 @@ export const AddOfficer: React.FC<Props> = () => {
       setValue("firstName", officer.firstName);
       setValue("lastName", officer.lastName);
       setValue("email", officer.email);
-      setValue("phone", officer.phone);
+      setValue("phoneNumber", officer.phoneNumber);
       setValue("password", "");
       setValue("startsAt", officer.schedule?.startsAt);
       setValue("endsAt", officer.schedule?.endsAt);
@@ -175,7 +176,7 @@ export const AddOfficer: React.FC<Props> = () => {
               placeholder="077xxxxxxx"
               required
               readOnly={editMode}
-              {...register("phone", { required: true })}
+              {...register("phoneNumber", { required: true })}
             />
           </div>
         </div>

@@ -22,9 +22,12 @@ const LoginPage = () => {
     execute(data);
   };
   if (status === "success") {
-    dispatch(
-      onLogin({ token: value?.data.jwtToken, email: value?.data.email })
-    );
+    setTimeout(()=>{
+      window.location.reload()
+      dispatch(
+        onLogin({ token: value?.data.jwtToken, email: value?.data.email })
+      );
+    },1000)
   }
   useEffect(() => {
     if (isAuth) {
