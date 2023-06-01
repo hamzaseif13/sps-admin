@@ -264,7 +264,7 @@ export const AddOfficer: React.FC<Props> = () => {
             </button>
             {zones.map((zone) => (
               <ZoneChip
-                key={zone.zoneId}
+                key={zone.id}
                 zoneTag={zone.tag}
                 setZones={setZones}
               />

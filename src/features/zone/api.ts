@@ -3,7 +3,7 @@ import axios from "axios";
 
 export interface ZoneInfo {
     fee: number
-    zoneId: number
+    id: number
     title:string
     tag:string
     address:string
@@ -14,7 +14,7 @@ export interface ZoneInfo {
     startsAt:string
     endsAt:string
 }
-export type ZoneRegisterRequest = Omit<ZoneInfo,"zoneId"|"availableSpaces">
+export type ZoneRegisterRequest = Omit<ZoneInfo,"id"|"availableSpaces">
 export interface ZoneLocation{
     latLng:{lat:number,lng:number}
     address:string

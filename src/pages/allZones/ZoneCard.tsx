@@ -10,6 +10,7 @@ interface Props {
 }
 const ZoneCard: React.FC<Props> = ({ zoneInfo }) => {
   const [qrModal, toggleQR] = useToggle(false);
+  console.log(zoneInfo)
   return (
     <div className="p-4 rounded-lg shadow-lg w-[350px] flex flex-col justify-between">
       <div className="flex gap-2 justify-between items-center">
@@ -35,7 +36,7 @@ const ZoneCard: React.FC<Props> = ({ zoneInfo }) => {
         <button className="submit-btn block my-2">Edit</button>
       </div>
       <CustomModal open={qrModal} onClose={toggleQR} title="Qr Code For Zone">
-        <QRGenerator zoneId={zoneInfo.zoneId} />
+        <QRGenerator zoneInfo={zoneInfo} />
       </CustomModal>
     </div>
   );

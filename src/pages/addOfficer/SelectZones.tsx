@@ -19,9 +19,9 @@ const SelectZones: React.FC<Props> = ({ setZones, zones }) => {
     }
   }, [status]);
   const toggle = (zoneInfo: ZoneInfo) => {
-    if (zones.some((zone) => zone.zoneId === zoneInfo.zoneId)) {
+    if (zones.some((zone) => zone.id === zoneInfo.id)) {
       setZones((prevZones) => {
-        return prevZones.filter((z) => z.zoneId !== zoneInfo.zoneId);
+        return prevZones.filter((z) => z.id !== zoneInfo.id);
       });
     } else {
       setZones((prevZones) => {
@@ -30,8 +30,8 @@ const SelectZones: React.FC<Props> = ({ setZones, zones }) => {
     }
   };
 
-  const isSelected = (zoneId: number) => {
-    return zones.some((zone) => zone.zoneId === zoneId);
+  const isSelected = (id: number) => {
+    return zones.some((zone) => zone.id === id);
   };
 
   const filterZones = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,10 +69,10 @@ const SelectZones: React.FC<Props> = ({ setZones, zones }) => {
         {filteredZones.map((zone) => (
           <div
             className={`chip rounded-lg hover:cursor-pointer hover:bg-blue-400 ${
-              isSelected(zone.zoneId) ? "bg-blue-500 text-white" : ""
+              isSelected(zone.id) ? "bg-blue-500 text-white" : ""
             }`}
             onClick={() => toggle(zone)}
-            key={zone.zoneId}>
+            key={zone.id}>
             <h1 className="font-extrabold">{zone.tag}</h1>
             <p>{zone.title}</p>
           </div>
