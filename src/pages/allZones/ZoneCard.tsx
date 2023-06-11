@@ -4,13 +4,15 @@ import useToggle from "../../hooks/useToggle";
 import QrCode2Icon from "@mui/icons-material/QrCode2";
 import { CustomModal } from "../../components/CustomModal";
 import QRGenerator from "./QRGenerator";
+import { Link } from "react-router-dom";
+import { Tooltip } from "@mui/material";
 
 interface Props {
   zoneInfo: ZoneInfo;
 }
 const ZoneCard: React.FC<Props> = ({ zoneInfo }) => {
-  const [qrModal, toggleQR] = useToggle(false);
-  console.log(zoneInfo)
+  
+const zoneNotEmpty =zoneInfo.availableSpaces!==zoneInfo.numberOfSpaces
   return (
     <div className="p-4 rounded-lg shadow-lg w-[350px] flex flex-col justify-between">
       <div className="flex gap-2 justify-between items-center">
@@ -28,16 +30,17 @@ const ZoneCard: React.FC<Props> = ({ zoneInfo }) => {
         {zoneInfo.endsAt.substring(0, 5)}
       </h2>
       <div className="flex gap-2">
-        <button
-          onClick={toggleQR}
+        <Link
+          to={`/zones/${zoneInfo.id}`}
           className="submit-btn block my-2 bg-gray-800">
-          <QrCode2Icon />
-        </button>
-        <button className="submit-btn block my-2">Edit</button>
+         Details
+        </Link>
+        <Tooltip title={`${zoneNotEmpty ? "cant edit zone when its not empty": "edit zone"}`} >
+        <Link to={`/zones/add`}  onClick= {zoneNotEmpty? e => e.preventDefault() : ()=>{}} className={`submit-btn block my-2 ${zoneNotEmpty && "bg-gray-400 cursor-not-allowed hover:bg-slate-400"}`} state={{edit:true,zoneInfo}}>
+          Edit
+        </Link>
+        </Tooltip>
       </div>
-      <CustomModal open={qrModal} onClose={toggleQR} title="Qr Code For Zone">
-        <QRGenerator zoneInfo={zoneInfo} />
-      </CustomModal>
     </div>
   );
 };

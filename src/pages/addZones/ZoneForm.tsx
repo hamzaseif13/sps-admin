@@ -4,53 +4,120 @@ import AddIcon from "@mui/icons-material/Add";
 import { CustomModal } from "../../components/CustomModal";
 import SelectLocation from "./SelectLocation";
 import useToggle from "../../hooks/useToggle";
-import useAsync from "../../hooks/useAsync";
+import { toast } from "react-toastify";
+import { useNavigate } from 'react-router-dom';
 import {
   ZoneLocation,
   ZoneRegisterRequest,
+  ZoneUpdateRequest,
   createZone,
+  updateZone,
 } from "../../features/zone/api";
 import { isBefore } from "../addOfficer";
-import { Alert } from "@mui/material";
+import { Alert, Chip, Snackbar } from "@mui/material";
+import { useLocation } from "react-router-dom";
+import { QueryClient, useMutation, useQueryClient } from "react-query";
 
 function ZoneForm() {
+  const navigation = useNavigate();
   const [showModal, toggleShowModal] = useToggle(false);
   const [zoneLocation, setZoneLocation] = useState<ZoneLocation>();
   const [error, setError] = useState<string>();
+  const location = useLocation();
+  const queryClient =useQueryClient();
+  const [editMode, setEditMode] = useState<boolean>(
+    Boolean(location.state?.edit) || false
+  );
   const {
-    execute,
-    status,
-    error: fetchError,
-    value,
-  } = useAsync<ZoneRegisterRequest>(createZone, false);
+    mutateAsync: createZoneAsync,
+    isLoading: creating,
+    error: creatingError,
+  } = useMutation("createZone", (req: ZoneRegisterRequest) => createZone(req));
+  const {
+    mutateAsync: updateZoneAsync,
+    isLoading: updating,
+    error: updatingError,
+  } = useMutation("updateZone", (req: ZoneUpdateRequest) => updateZone(req,location.state.zoneInfo.id!));
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
-
-  const submit = (data: any) => {
+  } = useForm({
+    defaultValues: {
+      ...location.state?.zoneInfo,
+    },
+  });
+  const submit = async (data: any) => {
     if (!isBefore(data.startsAt, data.endsAt)) {
       setError("The start at time must be before the end at time");
-    } else if (zoneLocation === undefined) {
+    } else if (zoneLocation === undefined && !editMode) {
       setError("Please Select Location");
     } else {
-      execute({
-        ...data,
-        startsAt: data.startsAt + ":00",
-        endsAt: data.endsAt + ":00",
-        lat: zoneLocation.latLng.lat,
-        lng: zoneLocation.latLng.lng,
-        address: zoneLocation.address,
-        tag: data.tag.toUpperCase(),
-      });
+      if (editMode) {
+        const resp = await updateZoneAsync({
+          startsAt: data.startsAt ,
+          endsAt: data.endsAt  ,
+          title: data.title,
+          numberOfSpaces: data.numberOfSpaces,
+          fee: data.fee,
+        });
+        if (resp.isSuccess) {
+          toast.success("Zone Updated Successfully", {
+            hideProgressBar: true,
+            position: "top-center",
+          });
+          navigation("/zones");
+          queryClient.refetchQueries("zones");
+        } else {
+          toast.error(resp.error, {
+            hideProgressBar: true,
+            position: "top-center",
+          });
+        }
+      } else {
+        const resp = await createZoneAsync({
+          ...data,
+          startsAt: data.startsAt + ":00",
+          endsAt: data.endsAt + ":00",
+          lat: zoneLocation?.latLng.lat!,
+          lng: zoneLocation?.latLng.lng!,
+          address: zoneLocation?.address,
+          tag: data.tag.toUpperCase(),
+        });
+        if (resp.isSuccess) {
+          toast.success("Zone created Successfully", {
+            hideProgressBar: true,
+            position: "top-center",
+          });
+          navigation("/zones");
+          queryClient.refetchQueries("zones");
+        } else {
+          toast.error(resp.error, {
+            hideProgressBar: true,
+            position: "top-center",
+          });
+        }
+      }
     }
   };
   const closeModal = () => {
     toggleShowModal();
   };
+
   return (
-    <div className="rounded-lg  shadow-2xl p-4 max-w-[800px] m-auto">
+    <div className="rounded-lg  shadow-2xl p-4 max-w-[800px] m-auto relative ">
+      <h1 className="text-4xl font-bold text-center title mb-10">
+        {editMode ? "Edit zone" : "Register New zone"}
+      </h1>
+
+      {editMode && (
+        <Chip
+          label="Edit Mode"
+          color="success"
+          variant="filled"
+          className="float-right absolute top-6 right-5"
+        />
+      )}
       <form onSubmit={handleSubmit(submit)} action="">
         <div className="flex gap-2">
           <div className="w-1/2">
@@ -77,6 +144,7 @@ function ZoneForm() {
               type="text"
               id="zoneTag"
               className="input-feild "
+              disabled={editMode}
               {...register("tag", { required: true })}
             />
             {errors.zoneTitle && (
@@ -146,7 +214,7 @@ function ZoneForm() {
             />
           </div>
         </div>
-        <div className="my-2">
+        {!editMode &&<div className="my-2">
           <label htmlFor="address" className="input-label">
             Zone Address
           </label>
@@ -166,22 +234,16 @@ function ZoneForm() {
               zoneLocation={zoneLocation}
             />
           </CustomModal>
-        </div>
+        </div>}
         {error && <span className="error-span ">{error}</span>}
-        {status === "success" && (
-          <Alert severity="success">Created Successfully</Alert>
-        )}
-        {status === "error" && fetchError?.response?.status === 400 && (
-          <Alert severity="error">Tag Already Exists</Alert>
-        )}
-        {status === "error" && fetchError?.response?.status! >= 500 && (
-          <Alert severity="error">
-            Something Went Wrong Please Try Again Later
-          </Alert>
-        )}
+
         <div className=" flex justify-end">
           <button className="submit-btn " type="submit">
-            {status === "pending" ? "Loading ..." : "Save"}
+            {updating || creating
+              ? "Loading..."
+              : editMode
+              ? "Save"
+              : "Create Zone"}
           </button>
         </div>
       </form>

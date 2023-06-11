@@ -37,7 +37,6 @@ const SelectZones: React.FC<Props> = ({ setZones, zones }) => {
   const filterZones = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (value === "") {
-      console.log("im here", fetchedZones);
       setFilteredZones(fetchedZones);
     } else {
       setFilteredZones((prevZones) => {

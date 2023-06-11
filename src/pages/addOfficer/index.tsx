@@ -17,14 +17,13 @@ import Alert from "@mui/material/Alert";
 import { ZoneInfo } from "../../features/zone/api";
 import { DayChip } from "./DayChip";
 import { useLocation } from "react-router-dom";
-import Chip from '@mui/material/Chip';
+import Chip from "@mui/material/Chip";
 export interface Schedule {
   startsAt: string;
   endsAt: string;
   daysOfWeek: string[];
 }
-interface Props {}
-export const AddOfficer: React.FC<Props> = () => {
+export const AddOfficer = () => {
   const location = useLocation();
   const [zonesModal, toggleZonesModal] = useToggle(false);
   const [daysModal, toggleDaysModal] = useToggle(false);
@@ -51,35 +50,46 @@ export const AddOfficer: React.FC<Props> = () => {
   } = useForm();
 
   const generatePassword = () => {
-    setValue("password", getValues("phoneNumber") + "-" + getValues("firstName"));
+    setValue(
+      "password",
+      getValues("phoneNumber") + "-" + getValues("firstName")
+    );
   };
   const submit = (data: any) => {
     if (!isBefore(data.startsAt, data.endsAt)) {
       setError("The start at time must be before the end at time");
-    } else if (daysOfWeek.length === 0 ) {
+    } else if (daysOfWeek.length === 0) {
       setError("Please Select  Days");
     } else {
-      console.log(zones)
       const schedule = {
         daysOfWeek: daysOfWeek.map((d) => d.toUpperCase()),
-        startsAt: data.startsAt ,
-        endsAt: data.endsAt ,
-        zoneIds: zones.map((z:any) => z.id),
+        startsAt: data.startsAt,
+        endsAt: data.endsAt,
+        zoneIds: zones.map((z: any) => z.id),
       };
-    
-      if(editMode){
-        execute({...schedule,id:location.state.officer.id})
-      }
-      else{
-        schedule.startsAt = data.startsAt + ":00";
-        schedule.endsAt = data.endsAt + ":00";
+
+      if (editMode) {
+        if (schedule.startsAt.length === 5) {
+          schedule.startsAt += ":00";
+        }
+        if (schedule.endsAt.length === 5) {
+          schedule.endsAt += ":00";
+        }
+        execute({ ...schedule, id: location.state.officer.id });
+      } else {
+        if (schedule.startsAt.length === 5) {
+          schedule.startsAt += ":00";
+        }
+        if (schedule.endsAt.length === 5) {
+          schedule.endsAt += ":00";
+        }
         execute({ ...data, ...schedule });
       }
     }
   };
   useEffect(() => {
     const edit = location.state?.edit;
-    setEditMode(Boolean(edit))
+    setEditMode(Boolean(edit));
     if (edit) {
       setEditMode(true);
       const officer = location.state.officer as Officer;
@@ -97,22 +107,19 @@ export const AddOfficer: React.FC<Props> = () => {
   return (
     <section className="px-2 max-w-[800px] m-auto mt-10 pb-20">
       <h1 className="text-4xl font-bold text-center title">
-        
-        {
-          editMode ? "Edit Officer" : "Register New Officer"
-        }
+        {editMode ? "Edit Officer" : "Register New Officer"}
       </h1>
       <form
         onSubmit={handleSubmit(submit)}
         action=""
         className="mt-8 rounded shadow-lg p-4">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-medium">Officers Details</h1>
-            {
-                editMode &&
-              <Chip label="Edit Mode" color="success" variant="filled" />
-            }
-          </div>
+          <>
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-medium">Officers Details</h1>
+          {editMode && (
+            <Chip label="Edit Mode" color="success" variant="filled" />
+          )}
+        </div>
         <div className="mb-3 flex gap-2">
           <div className="w-1/2">
             <label htmlFor="first-name" className="input-label">
@@ -180,7 +187,7 @@ export const AddOfficer: React.FC<Props> = () => {
             />
           </div>
         </div>
-        <div className="mb-3">
+        {!editMode && <div className="mb-3">
           <label htmlFor="password" className="input-label">
             Password
           </label>
@@ -206,8 +213,8 @@ export const AddOfficer: React.FC<Props> = () => {
             The default password will be the phone number, the officer will
             change it when he logs in
           </span>
-        </div>
-
+        </div>}
+        </>
         <h1 className="text-2xl font-medium mb-2">Schedule</h1>
         <div className="mb-3 flex w-full gap-2">
           <div className="w-1/2">
@@ -263,11 +270,7 @@ export const AddOfficer: React.FC<Props> = () => {
               <Add />
             </button>
             {zones.map((zone) => (
-              <ZoneChip
-                key={zone.id}
-                zoneTag={zone.tag}
-                setZones={setZones}
-              />
+              <ZoneChip key={zone.id} zoneTag={zone.tag} setZones={setZones} />
             ))}
           </div>
           <CustomModal
@@ -288,7 +291,9 @@ export const AddOfficer: React.FC<Props> = () => {
           </Alert>
         )}
         {status === "success" && (
-          <Alert severity="success">{editMode?"Updated":"Created"} Successfully</Alert>
+          <Alert severity="success">
+            {editMode ? "Updated" : "Created"} Successfully
+          </Alert>
         )}
         <div className=" flex justify-end mt-2">
           <button className="submit-btn " type="submit">

@@ -44,7 +44,10 @@ export const createOrUpdateOfficer = (
   req: OfficerRegisterRequest | OfficerUpdateRequest
 ) => {
   if ("id" in req) {
-    return axiosInstance.put(`${req.id}`, req);
+    const id = req.id;
+    const temp:any =req
+    delete temp.id
+    return axiosInstance.put(`${id}`, temp);
   } else {
     return axiosInstance.post("", req);
   }

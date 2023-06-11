@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
+import GoogleMapReact from "google-map-react";
 
 import SearchIcon from "@mui/icons-material/Search";
 import { ZoneLocation } from "../../features/zone/api";
@@ -13,77 +14,58 @@ interface Props {
 
 const SelectLocation: React.FC<Props> = ({ zoneLocation, setZoneLocation }) => {
   const mapRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  let geoCoder:google.maps.Geocoder ;
 
-  let globalMap: google.maps.Map;
-  let zoneMarker: google.maps.Marker | undefined;
-  let geoCoder = new google.maps.Geocoder();
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    globalMap = new window.google.maps.Map(mapRef.current!, {
-      zoom: 14,
-      center: zoneLocation
-        ? zoneLocation.latLng
-        : { lat: 31.9539, lng: 35.9106 },
-      clickableIcons: false,
-      fullscreenControl: false,
-    });
-    if (zoneLocation) {
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      zoneMarker = new google.maps.Marker({
-        map: globalMap,
-        position: zoneLocation.latLng,
-        draggable: true,
-      });
-    }
-    globalMap.addListener("click", (event: google.maps.MapMouseEvent) => {
-      if (zoneMarker) {
-        zoneMarker.setMap(null);
+ 
+  const defaultProps = {
+    center: {
+      lat: 31.9539,
+      lng: 35.9106,
+    },
+    zoom: 11,
+  };
+  const handleMapClick = (event: GoogleMapReact.ClickEventValue) => {
+    geoCoder = new google.maps.Geocoder();
+    geoCoder.geocode({ location: {lat:event.lat,lng:event.lng} }).then((response) => {
+      if (response.results[0]) {
+        setZoneLocation({
+          latLng: {lat: event.lat, lng: event.lng},
+          address: response.results[0].formatted_address,
+        });
       }
-      zoneMarker = new google.maps.Marker({
-        map: globalMap,
-        position: event.latLng,
-        draggable: true,
-      });
-      globalMap.panTo(event.latLng!);
-      geoCoder.geocode({ location: event.latLng }).then((response) => {
-        if (response.results[0]) {
-          setZoneLocation({
-            latLng: zoneMarker!.getPosition()?.toJSON()!,
-            address: response.results[0].formatted_address,
-          });
-        }
-      });
-    });
-  }, []);
-  useEffect(() => {
-    const searchBox = new google.maps.places.Autocomplete(inputRef.current!);
-    searchBox.addListener("place_changed", () => {
-      const place = searchBox.getPlace();
-      globalMap.panTo(place.geometry?.location!);
-      globalMap.setZoom(16);
-    });
-  }, []);
+    })
+  };
   return (
     <div className="">
       <span className="block h-8">{zoneLocation?.address}</span>
       <div className="relative">
-        <div className="flex absolute z-10 top-0 rounded items-center right-0 text-white bg-zinc-500">
-          <input
-            type="text"
-            ref={inputRef}
-            className="p-2 bg-white border text-black"
-          />
-          <SearchIcon className="w-10" />
+       
+        <div className="w-full border h-[500px] rounded shadow-lg hover:cursor-pointer" ref={mapRef}>
+          <GoogleMapReact
+            onClick={handleMapClick}
+            bootstrapURLKeys={{ key: import.meta.env.VITE_MAPS_API_KEY }}
+            defaultCenter={defaultProps.center}
+            defaultZoom={defaultProps.zoom} > 
+            {zoneLocation && (
+              <Marker lat={zoneLocation.latLng.lat} lng={zoneLocation.latLng.lng} />
+            )}
+          </GoogleMapReact>
         </div>
-        <div
-          className="w-full border h-[500px] rounded shadow-lg"
-          ref={mapRef}
-        />
       </div>
     </div>
   );
 };
-
+const Marker = ({ lat, lng }: any) => (
+  <div
+    style={{
+      position: "absolute",
+      transform: "translate(-50%, -50%)",
+      cursor: "pointer",
+      width: "20px",
+      height: "20px",
+      borderRadius: "50%",
+      background: "red",
+    }}
+  />
+);
 export default SelectLocation;

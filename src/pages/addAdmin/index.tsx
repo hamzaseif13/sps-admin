@@ -14,7 +14,6 @@ const AddAdmin = () => {
     } = useForm();
 
     const submit = (data: any) => {
-        console.log({email:data.email,firstName:data.firstName,lastName:data.lastName,password:data.password})
         execute({email:data.email,firstName:data.firstName,lastName:data.lastName,password:data.password})
     }
     const generatePassword = () => {
@@ -23,13 +22,13 @@ const AddAdmin = () => {
     return (
         <section className="px-2 max-w-[800px] m-auto mt-10 pb-20">
             <h1 className="text-4xl font-bold text-center title">
-                Register New Officer
+                Register New Admin
             </h1>
             <form
                 onSubmit={handleSubmit(submit)}
                 action=""
                 className="mt-8 rounded shadow-lg p-4">
-                <h1 className="text-2xl font-medium">Officers Details</h1>
+                <h1 className="text-2xl font-medium">Admin Details</h1>
                 <div className="mb-3 flex gap-2">
                     <div className='w-1/2'>
                         <label htmlFor="first-name" className="input-label">
