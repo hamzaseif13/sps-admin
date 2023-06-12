@@ -5,7 +5,7 @@ import { CustomModal } from "../../components/CustomModal";
 import SelectLocation from "./SelectLocation";
 import useToggle from "../../hooks/useToggle";
 import { toast } from "react-toastify";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import {
   ZoneLocation,
   ZoneRegisterRequest,
@@ -24,7 +24,7 @@ function ZoneForm() {
   const [zoneLocation, setZoneLocation] = useState<ZoneLocation>();
   const [error, setError] = useState<string>();
   const location = useLocation();
-  const queryClient =useQueryClient();
+  const queryClient = useQueryClient();
   const [editMode, setEditMode] = useState<boolean>(
     Boolean(location.state?.edit) || false
   );
@@ -37,7 +37,9 @@ function ZoneForm() {
     mutateAsync: updateZoneAsync,
     isLoading: updating,
     error: updatingError,
-  } = useMutation("updateZone", (req: ZoneUpdateRequest) => updateZone(req,location.state.zoneInfo.id!));
+  } = useMutation("updateZone", (req: ZoneUpdateRequest) =>
+    updateZone(req, location.state.zoneInfo.id!)
+  );
   const {
     register,
     handleSubmit,
@@ -54,13 +56,21 @@ function ZoneForm() {
       setError("Please Select Location");
     } else {
       if (editMode) {
-        const resp = await updateZoneAsync({
-          startsAt: data.startsAt ,
-          endsAt: data.endsAt  ,
+       
+        const body ={
+          startsAt: data.startsAt,
+          endsAt: data.endsAt,
           title: data.title,
           numberOfSpaces: data.numberOfSpaces,
           fee: data.fee,
-        });
+        }
+        if (body.startsAt.length === 5) {
+          body.startsAt += ":00";
+        }
+        if (body.endsAt.length === 5) {
+          body.endsAt += ":00";
+        }
+        const resp = await updateZoneAsync(body);
         if (resp.isSuccess) {
           toast.success("Zone Updated Successfully", {
             hideProgressBar: true,
@@ -75,7 +85,7 @@ function ZoneForm() {
           });
         }
       } else {
-        const resp = await createZoneAsync({
+        const body ={
           ...data,
           startsAt: data.startsAt + ":00",
           endsAt: data.endsAt + ":00",
@@ -83,7 +93,14 @@ function ZoneForm() {
           lng: zoneLocation?.latLng.lng!,
           address: zoneLocation?.address,
           tag: data.tag.toUpperCase(),
-        });
+        }
+        if (body.startsAt.length === 5) {
+          body.startsAt += ":00";
+        }
+        if (body.endsAt.length === 5) {
+          body.endsAt += ":00";
+        }
+        const resp = await createZoneAsync( body);
         if (resp.isSuccess) {
           toast.success("Zone created Successfully", {
             hideProgressBar: true,
@@ -214,27 +231,31 @@ function ZoneForm() {
             />
           </div>
         </div>
-        {!editMode &&<div className="my-2">
-          <label htmlFor="address" className="input-label">
-            Zone Address
-          </label>
-          <button
-            onClick={toggleShowModal}
-            type="button"
-            className="borde-gray-500 border flex gap-2 items-center p-2 rounded-lg hover:bg-white bg-gray-50">
-            {zoneLocation?.address ? zoneLocation?.address : "Select Location"}
-            <AddIcon className=" w-5" />
-          </button>
-          <CustomModal
-            title="Select Zone Location"
-            open={showModal}
-            onClose={closeModal}>
-            <SelectLocation
-              setZoneLocation={setZoneLocation}
-              zoneLocation={zoneLocation}
-            />
-          </CustomModal>
-        </div>}
+        {!editMode && (
+          <div className="my-2">
+            <label htmlFor="address" className="input-label">
+              Zone Address
+            </label>
+            <button
+              onClick={toggleShowModal}
+              type="button"
+              className="borde-gray-500 border flex gap-2 items-center p-2 rounded-lg hover:bg-white bg-gray-50">
+              {zoneLocation?.address
+                ? zoneLocation?.address
+                : "Select Location"}
+              <AddIcon className=" w-5" />
+            </button>
+            <CustomModal
+              title="Select Zone Location"
+              open={showModal}
+              onClose={closeModal}>
+              <SelectLocation
+                setZoneLocation={setZoneLocation}
+                zoneLocation={zoneLocation}
+              />
+            </CustomModal>
+          </div>
+        )}
         {error && <span className="error-span ">{error}</span>}
 
         <div className=" flex justify-end">
