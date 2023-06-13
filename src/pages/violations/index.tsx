@@ -3,6 +3,7 @@ import useAsync from "../../hooks/useAsync";
 import { Alert, LinearProgress } from "@mui/material";
 import { useQuery } from "react-query";
 import { getViolations } from "../../features/zone/api";
+import { Link } from "react-router-dom";
 
 const Violations = () => {
   const { data, isLoading, error,isRefetching } = useQuery("violations", () =>
@@ -72,7 +73,9 @@ const Violations = () => {
                     {violation.officer.firstName} {violation.officer.lastName}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                    {violation.zone.tag}
+                    <Link to={`/zones/${violation.zone.id}`} className="text-blue-500 underline">
+                      {violation.zone.tag}
+                    </Link>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                     <a href={import.meta.env.VITE_IMG_URL + violation.imageUrl} target="_blank" className="text-blue-500 underline">

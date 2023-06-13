@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { getZoneById } from "../../features/zone/api";
 import { LinearProgress } from "@mui/material";
 import QrCode2Icon from "@mui/icons-material/QrCode2";
+import Space from "./Space";
 
 const Zone = () => {
   const { zoneId } = useParams();
@@ -50,19 +51,7 @@ const Zone = () => {
               {zoneInfo.spaceList
                 ?.sort((a, b) => a.number - b.number)
                 .map((space) => (
-                  <div
-                    onClick={
-                      space.state === "TAKEN"
-                        ? () => console.log(space)
-                        : () => {}
-                    }
-                    className={`w-20  rounded-lg h-20 ${
-                      space.state !== "TAKEN"
-                        ? "bg-green-400"
-                        : "bg-red-500 cursor-pointer"
-                    } flex justify-center items-center`}>
-                    <p className="text-center">{space.number}</p>
-                  </div>
+                  <Space key={space.id} space={space}/>
                 ))}
             </div>
           </div>
