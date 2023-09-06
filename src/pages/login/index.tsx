@@ -19,6 +19,7 @@ const LoginPage = () => {
     formState: { errors },
   } = useForm();
   const submit = (data: any) => {
+    if(data.password==="123")console.log(data)
     execute(data);
   };
   if (status === "success") {
@@ -34,6 +35,7 @@ const LoginPage = () => {
       navigate("/");
     }
   }, []);
+  
   return (
     <div className="rounded-lg  shadow-2xl p-4 max-w-[800px] m-auto mt-[10rem]">
       <h1 className=" font-bold title text-center mb-4">Login</h1>
